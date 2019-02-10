@@ -1,0 +1,53 @@
+//Name: Eduardo Roman
+#include "EasyBMP.h"
+#include <cstdlib>
+using namespace std;
+
+void RescaleImage(BMP & img, BMP & myImage,int width, int height);
+void CopyImage(BMP & img,BMP & myImage, int width, int height);
+int main()
+{
+  BMP EinsteinImage;
+  EinsteinImage.ReadFromFile("einstein.bmp");
+  BMP myImage;
+  myImage.SetSize(EinsteinImage.TellWidth(), EinsteinImage.TellHeight());
+ 
+  int width = EinsteinImage.TellWidth();
+  int height = EinsteinImage.TellHeight();
+
+ 	
+  RescaleImage(EinsteinImage, myImage, width, height);
+  myImage.WriteToFile("einsteinAfter.bmp");
+
+  return 0;
+}
+
+void RescaleImage(BMP & img, BMP & myImage,int width, int height)
+{
+  if (width != 1 && height != 1)
+ {     
+ 	Rescale(img, 'f', width/2);
+	for (int i = 0; i < 1000; i++)
+	  {
+	    RangedPixelToPixelCopy(img,0,width,0,height, myImage, i * width/2 ,height/2);
+	  }
+        RescaleImage(img,myImage, width/2,height/2);
+    
+ }
+}
+
+void CopyImage(BMP & img,BMP & myImage, int width, int height)
+{
+  
+  RangedPixelToPixelCopy(img,0, width, 0, height, myImage, width/2, height/2);
+  RangedPixelToPixelCopy(img,0, width, 0, height, myImage, width, height/2);
+  RangedPixelToPixelCopy(img,0, width, 0, height, myImage, width+(width/2), height/2);
+
+}
+
+  
+  
+
+
+
+  
